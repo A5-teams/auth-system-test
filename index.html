@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>A5WCH - Log In</title>
+  <!-- React & Babel CDNs -->
+  <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+</head>
+<body style="margin:0; background-color:#000000; font-family: sans-serif;">
+
+  <div id="root"></div>
+
+  <script type="text/babel">
+    function App() {
+      const [formData, setFormData] = React.useState({
+        username: '',
+        password: '',
+      });
+
+      const handleChange = (e) => {
+        setFormData({
+          ...formData,
+          [e.target.name]: e.target.value,
+        });
+      };
+
+      const handleSubmit = (e) => {
+        e.preventDefault();
+        alert(`Welcome to A5WCH, ${formData.username}!`);
+      };
+
+      return (
+        <div style={{
+          backgroundColor: '#000000',
+          color: '#ffffff',
+          minHeight: '100vh',
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'space-between',
+          padding: '24px',
+          boxSizing: 'border-box'
+        }}>
+          {/* Header */}
+          <header style={{ maxWidth: '1100px', width: '100%', margin: '0 auto' }}>
+            <h1 style={{
+              fontSize: '32px',
+              fontWeight: '900',
+              background: 'linear-gradient(90deg, #25f4ee 0%, #ffffff 50%, #fe2c55 100%)',
+              WebkitBackgroundClip: 'text',
+              WebkitTextFillColor: 'transparent',
+              margin: 0
+            }}>
+              A5WCH
+            </h1>
+          </header>
+
+          {/* Login Card */}
+          <main style={{
+            maxWidth: '380px',
+            width: '100%',
+            margin: 'auto',
+            backgroundColor: '#121212',
+            border: '1px solid #2f2f2f',
+            borderRadius: '16px',
+            padding: '32px 24px',
+            boxSizing: 'border-box'
+          }}>
+            <h2 style={{ fontSize: '22px', fontWeight: '700', textAlign: 'center', marginBottom: '8px', color: '#fff' }}>
+              Log in to A5WCH
+            </h2>
+            <p style={{ color: '#8a8a8a', fontSize: '13px', textAlign: 'center', marginBottom: '24px' }}>
+              Manage your account, check notifications, comment on videos, and more.
+            </p>
+
+            <form onSubmit={handleSubmit}>
+              <div style={{ marginBottom: '16px' }}>
+                <input
+                  type="text"
+                  name="username"
+                  placeholder="Email or Username"
+                  value={formData.username}
+                  onChange={handleChange}
+                  required
+                  style={{
+                    width: '100%',
+                    backgroundColor: '#1e1e1e',
+                    border: '1px solid #333',
+                    borderRadius: '8px',
+                    padding: '12px 14px',
+                    color: '#fff',
+                    fontSize: '14px',
+                    boxSizing: 'border-box',
+                    outline: 'none'
+                  }}
+                />
+              </div>
+
+              <div style={{ marginBottom: '16px' }}>
+                <input
+                  type="password"
+                  name="password"
+                  placeholder="Password"
+                  value={formData.password}
+                  onChange={handleChange}
+                  required
+                  style={{
+                    width: '100%',
+                    backgroundColor: '#1e1e1e',
+                    border: '1px solid #333',
+                    borderRadius: '8px',
+                    padding: '12px 14px',
+                    color: '#fff',
+                    fontSize: '14px',
+                    boxSizing: 'border-box',
+                    outline: 'none'
+                  }}
+                />
+              </div>
+
+              <div style={{ textAlign: 'right', marginBottom: '20px' }}>
+                <a href="#forgot" style={{ color: '#a0a0a0', fontSize: '12px', textDecoration: 'none' }}>
+                  Forgot password?
+                </a>
+              </div>
+
+              <button
+                type="submit"
+                style={{
+                  width: '100%',
+                  backgroundColor: '#fe2c55',
+                  color: '#ffffff',
+                  border: 'none',
+                  borderRadius: '8px',
+                  padding: '12px',
+                  fontSize: '15px',
+                  fontWeight: '700',
+                  cursor: 'pointer'
+                }}
+              >
+                Log in
+              </button>
+            </form>
+
+            <div style={{
+              marginTop: '24px',
+              paddingTop: '20px',
+              borderTop: '1px solid #222',
+              textAlign: 'center',
+              fontSize: '13px',
+              color: '#8a8a8a'
+            }}>
+              Don't have an account?{' '}
+              <a href="#signup" style={{ color: '#fe2c55', fontWeight: '600', textDecoration: 'none' }}>
+                Sign up
+              </a>
+            </div>
+          </main>
+
+          {/* Footer */}
+          <footer style={{ textAlign: 'center', fontSize: '12px', color: '#555555' }}>
+            &copy; 2026 A5WCH Project
+          </footer>
+        </div>
+      );
+    }
+
+    const root = ReactDOM.createRoot(document.getElementById('root'));
+    root.render(<App />);
+  </script>
+</body>
+</html>
