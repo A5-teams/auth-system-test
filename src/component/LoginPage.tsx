@@ -23,8 +23,6 @@ export default function LoginPage() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [loginError, setLoginError] = useState<string | null>(null);
 
-  // Point this at your Django server, e.g. via a .env file:
-  // VITE_API_URL=http://localhost:8000/api
   const API_URL = import.meta.env.VITE_API_URL ?? "http://localhost:8000/api";
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -85,14 +83,13 @@ export default function LoginPage() {
 
       localStorage.setItem("accessToken", data.tokens.access);
       localStorage.setItem("refreshToken", data.tokens.refresh);
+      localStorage.setItem("user", JSON.stringify(data.user));
 
       if (formData.rememberMe) {
         localStorage.setItem("rememberMe", "true");
       }
 
-      // Redirect to wherever the app should land after login, e.g.:
-      // window.location.href = "/dashboard";
-      console.log("Logged in:", data.user);
+      window.location.href = "/dashboard";
     } catch (error) {
       console.error("Login failed:", error);
       setLoginError("Could not reach the server. Please try again.");
@@ -130,7 +127,6 @@ export default function LoginPage() {
           )}
 
           <form onSubmit={handleSubmit} noValidate className="space-y-5">
-            {/* Email */}
             <div>
               <label htmlFor="email" className="mb-1.5 block text-sm font-medium text-slate-700">
                 Email address
@@ -151,7 +147,6 @@ export default function LoginPage() {
               {errors.email && <p className="mt-1.5 text-xs text-red-600">{errors.email}</p>}
             </div>
 
-            {/* Password */}
             <div>
               <div className="mb-1.5 flex items-center justify-between">
                 <label htmlFor="password" className="block text-sm font-medium text-slate-700">
@@ -196,7 +191,6 @@ export default function LoginPage() {
               {errors.password && <p className="mt-1.5 text-xs text-red-600">{errors.password}</p>}
             </div>
 
-            {/* Remember me */}
             <div className="flex items-center">
               <input
                 id="rememberMe"
