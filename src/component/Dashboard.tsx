@@ -1,11 +1,23 @@
+import { useEffect, useState } from "react";
+
 interface DashboardUser {
   full_name: string;
   email: string;
 }
 
-export default function Dashboard() {
+function getStoredUser(): DashboardUser | null {
   const userJson = localStorage.getItem("user");
-  const user: DashboardUser | null = userJson ? JSON.parse(userJson) : null;
+  return userJson ? JSON.parse(userJson) : null;
+}
+
+export default function Dashboard() {
+  const [user] = useState<DashboardUser | null>(getStoredUser);
+
+  useEffect(() => {
+    if (!user) {
+      window.location.href = "/login";
+    }
+  }, [user]);
 
   const handleLogout = () => {
     localStorage.removeItem("accessToken");
@@ -15,8 +27,6 @@ export default function Dashboard() {
   };
 
   if (!user) {
-    // No user in storage means they're not logged in — bounce them back
-    window.location.href = "/login";
     return null;
   }
 
