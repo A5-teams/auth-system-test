@@ -1,4 +1,5 @@
 import { useState, type FormEvent, type ChangeEvent } from "react";
+import { Link } from 'react-router-dom';
 
 interface LoginFormData {
   username: string;
@@ -136,7 +137,7 @@ export default function LoginPage() {
                 type="username"
                 value={formData.username}
                 onChange={handleChange}
-                placeholder="jane@example.com"
+                placeholder="username"
                 className={`w-full rounded-lg border px-3.5 py-2.5 text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-offset-0 ${
                   errors.username
                     ? "border-red-300 focus:border-red-400 focus:ring-red-100"
@@ -151,9 +152,9 @@ export default function LoginPage() {
                 <label htmlFor="password" className="block text-sm font-medium text-slate-700">
                   Password
                 </label>
-                <a href="/forgot-password" className="text-xs font-medium text-slate-500 hover:text-slate-900">
+                <Link to="/forgot-password" className="text-xs font-medium text-slate-500 hover:text-slate-900">
                   Forgot password?
-                </a>
+                </Link>
               </div>
               <div className="relative">
                 <input
@@ -189,7 +190,7 @@ export default function LoginPage() {
               </div>
               {errors.password && <p className="mt-1.5 text-xs text-red-600">{errors.password}</p>}
             </div>
-            
+
             <button
               type="submit"
               disabled={isSubmitting}
@@ -201,9 +202,9 @@ export default function LoginPage() {
 
           <p className="mt-6 text-center text-sm text-slate-500">
             Don't have an account?{" "}
-            <a href="/register" className="font-medium text-slate-900 hover:underline">
+            <Link to ="/register" className="font-medium text-slate-900 hover:underline">
               Create one
-            </a>
+           </Link>
           </p>
         </div>
       </div>

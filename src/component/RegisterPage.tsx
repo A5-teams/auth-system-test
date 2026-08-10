@@ -1,4 +1,5 @@
 import { useState, type FormEvent, type ChangeEvent } from "react";
+import {Link} from 'react-router-dom';
 
 
 interface RegisterFormData {
@@ -205,7 +206,7 @@ export default function RegisterPage() {
             </div>
 
             <div>
-              <label htmlFor="fullName" className="mb-1.5 block text-sm font-medium text-slate-700">
+              <label htmlFor="username" className="mb-1.5 block text-sm font-medium text-slate-700">
                username
               </label>
               <input
@@ -227,11 +228,7 @@ export default function RegisterPage() {
             </div>
 
             {/* camp */}
-            <div>
-              <label htmlFor="camp" className="mb-1.5 block text-sm font-medium text-slate-700">
-                camp address
-              </label>
-
+            <div className= "w-full rounded-lg border px-3.5 py-2.5 text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-offset-0 ">
                 <select name="camp" onChange={handleChange}>
                     <option value="">Select a camp</option>
                     <option value="INSA">INSA</option>
@@ -350,9 +347,9 @@ export default function RegisterPage() {
 
           <p className="mt-6 text-center text-sm text-slate-500">
             Already have an account?{" "}
-            <a href="/login" className="font-medium text-slate-900 hover:underline">
+            <Link to="/login" className="font-medium text-slate-900 hover:underline">
               Sign in
-            </a>
+            </Link>
           </p>
         </div>
       </div>
