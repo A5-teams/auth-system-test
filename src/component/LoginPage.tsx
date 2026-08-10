@@ -1,21 +1,21 @@
-import { useState, FormEvent, ChangeEvent } from "react";
+import { useState, type FormEvent, type ChangeEvent } from "react";
 
 interface LoginFormData {
-  email: string;
+  username: string;
   password: string;
-  rememberMe: boolean;
+  
 }
 
 interface FormErrors {
-  email?: string;
+  username?: string;
   password?: string;
 }
 
 export default function LoginPage() {
   const [formData, setFormData] = useState<LoginFormData>({
-    email: "",
-    password: "",
-    rememberMe: false,
+    username: "",
+    password: ""
+   
   });
 
   const [errors, setErrors] = useState<FormErrors>({});
@@ -40,10 +40,10 @@ export default function LoginPage() {
   const validate = (): boolean => {
     const newErrors: FormErrors = {};
 
-    if (!formData.email.trim()) {
-      newErrors.email = "Email is required";
-    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
-      newErrors.email = "Enter a valid email address";
+    if (!formData.username.trim()) {
+      newErrors.username = "username is required";
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.username)) {
+      newErrors.username = "Enter a valid username address";
     }
 
     if (!formData.password) {
@@ -63,11 +63,12 @@ export default function LoginPage() {
     setLoginError(null);
 
     try {
-      const response = await fetch(`${API_URL}/auth/login/`, {
+      const response = await fetch(`${API_URL}/auth/A5teamssecuredfirstauthlogin/`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
+        credentials: "include",
         body: JSON.stringify({
-          email: formData.email,
+          username: formData.username,
           password: formData.password,
         }),
       });
@@ -76,7 +77,7 @@ export default function LoginPage() {
 
       if (!response.ok) {
         setLoginError(
-          data.non_field_errors?.[0] ?? data.detail ?? "Incorrect email or password."
+          data.non_field_errors?.[0] ?? data.detail ?? "Incorrect username or password."
         );
         return;
       }
@@ -85,9 +86,7 @@ export default function LoginPage() {
       localStorage.setItem("refreshToken", data.tokens.refresh);
       localStorage.setItem("user", JSON.stringify(data.user));
 
-      if (formData.rememberMe) {
-        localStorage.setItem("rememberMe", "true");
-      }
+      
 
       window.location.href = "/dashboard";
     } catch (error) {
@@ -128,23 +127,23 @@ export default function LoginPage() {
 
           <form onSubmit={handleSubmit} noValidate className="space-y-5">
             <div>
-              <label htmlFor="email" className="mb-1.5 block text-sm font-medium text-slate-700">
-                Email address
+              <label htmlFor="username" className="mb-1.5 block text-sm font-medium text-slate-700">
+                username address
               </label>
               <input
-                id="email"
-                name="email"
-                type="email"
-                value={formData.email}
+                id="username"
+                name="username"
+                type="username"
+                value={formData.username}
                 onChange={handleChange}
                 placeholder="jane@example.com"
                 className={`w-full rounded-lg border px-3.5 py-2.5 text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-offset-0 ${
-                  errors.email
+                  errors.username
                     ? "border-red-300 focus:border-red-400 focus:ring-red-100"
                     : "border-slate-300 focus:border-slate-400 focus:ring-slate-100"
                 }`}
               />
-              {errors.email && <p className="mt-1.5 text-xs text-red-600">{errors.email}</p>}
+              {errors.username && <p className="mt-1.5 text-xs text-red-600">{errors.username}</p>}
             </div>
 
             <div>
@@ -190,21 +189,7 @@ export default function LoginPage() {
               </div>
               {errors.password && <p className="mt-1.5 text-xs text-red-600">{errors.password}</p>}
             </div>
-
-            <div className="flex items-center">
-              <input
-                id="rememberMe"
-                name="rememberMe"
-                type="checkbox"
-                checked={formData.rememberMe}
-                onChange={handleChange}
-                className="h-4 w-4 rounded border-slate-300 text-slate-900 focus:ring-2 focus:ring-slate-300"
-              />
-              <label htmlFor="rememberMe" className="ml-2 text-sm text-slate-600">
-                Remember me for 30 days
-              </label>
-            </div>
-
+            
             <button
               type="submit"
               disabled={isSubmitting}

@@ -1,26 +1,29 @@
-import { useState, FormEvent, ChangeEvent } from "react";
+import { useState, type FormEvent, type ChangeEvent } from "react";
 
 
 interface RegisterFormData {
   fullName: string;
-  email: string;
+  camp: string;
   password: string;
-  confirmPassword: string;
+  username: string;
+  confirm_password:string;
 }
 
 interface FormErrors {
   fullName?: string;
-  email?: string;
+  camp?: string;
   password?: string;
-  confirmPassword?: string;
+  username?: string;
+  confirm_password ?:string;
 }
 
 export default function RegisterPage() {
   const [formData, setFormData] = useState<RegisterFormData>({
     fullName: "",
-    email: "",
+    camp: "",
+     username: "",
     password: "",
-    confirmPassword: "",
+    confirm_password:""
   });
 
   const [errors, setErrors] = useState<FormErrors>({});
@@ -34,7 +37,7 @@ export default function RegisterPage() {
   // VITE_API_URL=http://localhost:8000/api
   const API_URL = import.meta.env.VITE_API_URL ?? "http://localhost:8000/api";
 
-  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
     // Clear the error for this field as the user types
@@ -50,10 +53,10 @@ export default function RegisterPage() {
       newErrors.fullName = "Full name is required";
     }
 
-    if (!formData.email.trim()) {
-      newErrors.email = "Email is required";
-    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
-      newErrors.email = "Enter a valid email address";
+    if (!formData.camp.trim()) {
+      newErrors.camp = "camp is required";
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.camp)) {
+      newErrors.camp = "Enter a valid camp address";
     }
 
     if (!formData.password) {
@@ -62,8 +65,8 @@ export default function RegisterPage() {
       newErrors.password = "Password must be at least 8 characters";
     }
 
-    if (formData.confirmPassword !== formData.password) {
-      newErrors.confirmPassword = "Passwords do not match";
+    if (formData.confirm_password !== formData.password) {
+      newErrors.confirm_password = "Passwords do not match";
     }
 
     setErrors(newErrors);
@@ -79,14 +82,14 @@ export default function RegisterPage() {
     setServerError(null);
 
     try {
-      const response = await fetch(`${API_URL}/auth/register/`, {
+      const response = await fetch(`${API_URL}/auth/amiro6sdsecured/register/`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           full_name: formData.fullName,
-          email: formData.email,
+          camp: formData.camp,
           password: formData.password,
-          confirm_password: formData.confirmPassword,
+          confirm_password: formData.confirm_password,
         }),
       });
 
@@ -94,11 +97,11 @@ export default function RegisterPage() {
 
       if (!response.ok) {
         // Django REST Framework returns field errors as
-        // { email: ["..."], password: ["..."] } or { non_field_errors: ["..."] }
+        // { camp: ["..."], password: ["..."] } or { non_field_errors: ["..."] }
         const fieldErrors: FormErrors = {};
-        if (data.email) fieldErrors.email = data.email[0];
+        if (data.camp) fieldErrors.camp = data.camp[0];
         if (data.password) fieldErrors.password = data.password[0];
-        if (data.confirm_password) fieldErrors.confirmPassword = data.confirm_password[0];
+        if (data.confirm_password) fieldErrors.confirm_password = data.confirm_password[0];
         if (data.full_name) fieldErrors.fullName = data.full_name[0];
 
         if (Object.keys(fieldErrors).length > 0) {
@@ -201,25 +204,57 @@ export default function RegisterPage() {
               )}
             </div>
 
-            {/* Email */}
             <div>
-              <label htmlFor="email" className="mb-1.5 block text-sm font-medium text-slate-700">
-                Email address
+              <label htmlFor="fullName" className="mb-1.5 block text-sm font-medium text-slate-700">
+               username
               </label>
               <input
-                id="email"
-                name="email"
-                type="email"
-                value={formData.email}
+                id="username"
+                name="username"
+                type="text"
+                value={formData.username}
                 onChange={handleChange}
-                placeholder="jane@example.com"
+                placeholder="Jane Doe"
                 className={`w-full rounded-lg border px-3.5 py-2.5 text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-offset-0 ${
-                  errors.email
+                  errors.username
                     ? "border-red-300 focus:border-red-400 focus:ring-red-100"
                     : "border-slate-300 focus:border-slate-400 focus:ring-slate-100"
                 }`}
               />
-              {errors.email && <p className="mt-1.5 text-xs text-red-600">{errors.email}</p>}
+              {errors.username && (
+                <p className="mt-1.5 text-xs text-red-600">{errors.username}</p>
+              )}
+            </div>
+
+            {/* camp */}
+            <div>
+              <label htmlFor="camp" className="mb-1.5 block text-sm font-medium text-slate-700">
+                camp address
+              </label>
+
+                <select name="camp" onChange={handleChange}>
+                    <option value="">Select a camp</option>
+                    <option value="INSA">INSA</option>
+                    <option value="AAiT">Jimma</option>
+                    <option value="Haramaya">Haramaya</option>
+                    <option value="AAiT">BahirDar</option>
+                    <option value="Haramaya">AAST</option>
+                    <option value="Haramaya">ASTU</option>
+                </select>
+                    {/* <input
+                id="camp"
+                name="camp"
+                type="camp"
+                value={formData.camp}
+                onChange={handleChange}
+                placeholder="jane@example.com"
+                className={`w-full rounded-lg border px-3.5 py-2.5 text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-offset-0 ${
+                  errors.camp
+                    ? "border-red-300 focus:border-red-400 focus:ring-red-100"
+                    : "border-slate-300 focus:border-slate-400 focus:ring-slate-100"
+                }`}
+              /> */}
+              {errors.camp && <p className="mt-1.5 text-xs text-red-600">{errors.camp}</p>}
             </div>
 
             {/* Password */}
@@ -272,11 +307,11 @@ export default function RegisterPage() {
                   id="confirmPassword"
                   name="confirmPassword"
                   type={showConfirmPassword ? "text" : "password"}
-                  value={formData.confirmPassword}
+                  value={formData.confirm_password}
                   onChange={handleChange}
                   placeholder="Re-enter your password"
                   className={`w-full rounded-lg border px-3.5 py-2.5 pr-10 text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-offset-0 ${
-                    errors.confirmPassword
+                    errors.confirm_password
                       ? "border-red-300 focus:border-red-400 focus:ring-red-100"
                       : "border-slate-300 focus:border-slate-400 focus:ring-slate-100"
                   }`}
@@ -299,8 +334,8 @@ export default function RegisterPage() {
                   )}
                 </button>
               </div>
-              {errors.confirmPassword && (
-                <p className="mt-1.5 text-xs text-red-600">{errors.confirmPassword}</p>
+              {errors.confirm_password && (
+                <p className="mt-1.5 text-xs text-red-600">{errors.confirm_password}</p>
               )}
             </div>
 
